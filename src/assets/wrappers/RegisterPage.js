@@ -31,5 +31,12 @@ const Wrapper = styled.section`
     cursor: pointer;
     letter-spacing: var(--letterSpacing);
   }
+  span {
+    color: red;
+    margin: 0;
+    margin-top: 1rem;
+    text-align: center;
+    display: block;
+  }
 `
 export default Wrapper

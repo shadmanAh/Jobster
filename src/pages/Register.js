@@ -93,7 +93,7 @@ function Register() {
             {values.isMember ? 'Register' : 'Login'}
           </button>
         </p>
-        <p>You most turn on your VPN</p>
+        <span>You most turn on your VPN</span>
       </form>
     </Wrapper>
   )
