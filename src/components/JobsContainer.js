@@ -8,14 +8,22 @@ import { getAllJobs } from '../features/allJobs/allJobsSlice'
 import PageBtnContainer from './PageBtnContainer'
 
 function JobsContainer() {
-  const { jobs, isLoading, page, totalJobs, numOfPages } = useSelector(
-    (store) => store.allJobs
-  )
+  const {
+    jobs,
+    isLoading,
+    page,
+    totalJobs,
+    numOfPages,
+    search,
+    searchStatus,
+    searchType,
+    sort,
+  } = useSelector((store) => store.allJobs)
   const dispatch = useDispatch()
 
   useEffect(() => {
     dispatch(getAllJobs())
-  }, [])
+  }, [page, search, searchStatus, searchType, sort])
 
   if (isLoading) {
     return <Loading center />

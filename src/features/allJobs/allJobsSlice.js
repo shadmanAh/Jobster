@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { toast } from 'react-toastify'
-import customFetch from '../../utils/axios'
+import { getAllJobsThunk, showStatsThunk } from './allJobsThunk'
 
 const initialFiltersState = {
   search: '',
@@ -21,30 +21,9 @@ const initialState = {
   ...initialFiltersState,
 }
 
-export const getAllJobs = createAsyncThunk(
-  'allJobs/getJobs',
-  async (_, thunkAPI) => {
-    let url = `/jobs`
-    try {
-      const resp = await customFetch.get(url)
-      return resp.data
-    } catch (error) {
-      return thunkAPI.rejectWithValue('There was an error')
-    }
-  }
-)
+export const getAllJobs = createAsyncThunk('allJobs/getJobs', getAllJobsThunk)
 
-export const showStats = createAsyncThunk(
-  'allJobs/showStats',
-  async (_, thunkAPI) => {
-    try {
-      const resp = await customFetch.get('/jobs/stats')
-      return resp.data
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data.msg)
-    }
-  }
-)
+export const showStats = createAsyncThunk('allJobs/showStats', showStatsThunk)
 
 const allJobsSlice = createSlice({
   name: 'allJobs',
@@ -57,12 +36,16 @@ const allJobsSlice = createSlice({
       state.isLoading = false
     },
     handleChange: (state, { payload: { name, value } }) => {
-      // state.page = 1 later
+      state.page = 1
       state[name] = value
     },
     clearFilters: (state) => {
       return { ...state, ...initialFiltersState }
     },
+    changePage: (state, { payload }) => {
+      state.page = payload
+    },
+    clearAllJobsState: (state) => initialState,
   },
   extraReducers: {
     [getAllJobs.pending]: (state) => {
@@ -93,7 +76,13 @@ const allJobsSlice = createSlice({
   },
 })
 
-export const { showLoading, hideLoading, clearFilters, handleChange } =
-  allJobsSlice.actions
+export const {
+  showLoading,
+  hideLoading,
+  clearFilters,
+  handleChange,
+  changePage,
+  clearAllJobsState,
+} = allJobsSlice.actions
 
 export default allJobsSlice.reducer
